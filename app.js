@@ -162,30 +162,54 @@ function setupGenderButtons() {
     });
 }
 
-// ── Year Inputs ──
+// ── Year Range Slider ──
 
 function setupYearInputs() {
     const startInput = document.getElementById("year-start");
     const endInput = document.getElementById("year-end");
+    const labelStart = document.getElementById("range-label-start");
+    const labelEnd = document.getElementById("range-label-end");
+    const fill = document.getElementById("range-track-fill");
 
-    const update = () => {
-        let s = parseInt(startInput.value) || 1880;
-        let e = parseInt(endInput.value) || 2024;
-        s = Math.max(1880, Math.min(2024, s));
-        e = Math.max(1880, Math.min(2024, e));
-        if (s > e) [s, e] = [e, s];
-        state.yearStart = s;
-        state.yearEnd = e;
+    function updateFill() {
+        const min = parseInt(startInput.min);
+        const max = parseInt(startInput.max);
+        const pctStart = ((state.yearStart - min) / (max - min)) * 100;
+        const pctEnd = ((state.yearEnd - min) / (max - min)) * 100;
+        fill.style.left = pctStart + "%";
+        fill.style.right = (100 - pctEnd) + "%";
+    }
 
+    const renderCharts = debounce(() => {
         if (state.nameDetail) {
             renderCountChart();
             renderRankChart();
         }
         renderTopNames();
-    };
+    }, 80);
 
-    startInput.addEventListener("change", update);
-    endInput.addEventListener("change", update);
+    function onInput() {
+        let s = parseInt(startInput.value);
+        let e = parseInt(endInput.value);
+
+        // Prevent handles from crossing
+        if (s > e) {
+            if (this === startInput) startInput.value = e;
+            else endInput.value = s;
+            return;
+        }
+
+        state.yearStart = s;
+        state.yearEnd = e;
+        labelStart.textContent = s;
+        labelEnd.textContent = e;
+        updateFill();
+        renderCharts();
+    }
+
+    startInput.addEventListener("input", onInput);
+    endInput.addEventListener("input", onInput);
+    updateFill();
 }
 
 // ── Top Names Controls ──

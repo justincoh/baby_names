@@ -162,29 +162,114 @@ header p {
     border-color: var(--color-text);
 }
 
-/* Year inputs */
-.year-inputs {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
+/* Year range slider */
+.control-group-slider {
+    flex: 1;
+    min-width: 220px;
 }
 
-.year-inputs input {
-    width: 70px;
-    padding: 0.5rem;
-    font-size: 0.9rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    text-align: center;
+.range-slider {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-top: 0.15rem;
+}
+
+.range-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    min-width: 2.8em;
+    color: var(--color-text);
+}
+
+#range-label-end {
+    text-align: right;
+}
+
+.range-track-wrapper {
+    position: relative;
+    flex: 1;
+    height: 28px;
+    display: flex;
+    align-items: center;
+}
+
+.range-track-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--color-border);
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+.range-track-fill {
+    position: absolute;
+    height: 4px;
+    background: var(--color-text);
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+.range-track-wrapper input[type="range"] {
+    position: absolute;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    pointer-events: none;
+    margin: 0;
+    height: 28px;
+}
+
+.range-track-wrapper input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    height: 0;
+}
+
+.range-track-wrapper input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-text);
+    border: 2px solid var(--color-surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    pointer-events: all;
+    position: relative;
+}
+
+.range-track-wrapper input[type="range"]::-moz-range-track {
+    height: 0;
+    border: none;
+    background: transparent;
+}
+
+.range-track-wrapper input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-text);
+    border: 2px solid var(--color-surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    pointer-events: all;
+}
+
+.range-track-wrapper input[type="range"]:focus {
     outline: none;
 }
 
-.year-inputs input:focus {
-    border-color: #999;
+.range-track-wrapper input[type="range"]:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
-.year-inputs span {
-    color: var(--color-muted);
+.range-track-wrapper input[type="range"]:focus::-moz-range-thumb {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Sections */
