@@ -439,6 +439,7 @@ function addLineTooltip(svg, g, data, xScale, yAccessor, innerW, innerH, color, 
 // ── Top Names Bar Charts ──
 
 function renderTopNames() {
+    clearTooltips();
     const genders =
         state.genderFilter === "both" ? ["F", "M"] : [state.genderFilter];
 
@@ -490,6 +491,9 @@ function renderTopNames() {
         const svg = d3.select(container).append("svg").attr("width", width).attr("height", height);
         const g = svg.append("g").attr("transform", `translate(${MARGIN.left},${MARGIN.top})`);
 
+        // Tooltip
+        const tooltipDiv = d3.select("body").append("div").attr("class", "chart-tooltip").style("opacity", 0);
+
         // Bars
         g.selectAll("rect")
             .data(topData)
@@ -500,6 +504,16 @@ function renderTopNames() {
             .attr("fill", color)
             .attr("rx", 3)
             .attr("width", 0)
+            .on("mousemove", (event, d) => {
+                tooltipDiv
+                    .style("opacity", 1)
+                    .html(`${d.name}: <b>${d.count.toLocaleString()}</b>`)
+                    .style("left", event.pageX + 12 + "px")
+                    .style("top", event.pageY - 20 + "px");
+            })
+            .on("mouseleave", () => {
+                tooltipDiv.style("opacity", 0);
+            })
             .transition()
             .duration(600)
             .attr("width", (d) => x(d.count));
@@ -514,6 +528,7 @@ function renderTopNames() {
             .attr("y", (d) => y(d.name) + y.bandwidth() / 2)
             .attr("dy", "0.35em")
             .text((d) => d.count.toLocaleString())
+            .style("pointer-events", "none")
             .style("opacity", 0)
             .transition()
             .delay(400)
