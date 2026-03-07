@@ -13,7 +13,7 @@ Single-page D3.js web app visualizing U.S. baby name popularity (1880–2024) fr
 ## Architecture
 
 ### Preprocessing (`preprocess.py`)
-Parses all 146 CSVs and generates `data/` directory (gitignored, regenerate with `python preprocess.py`):
+Parses all 146 CSVs and generates `data/` directory (regenerate with `python preprocess.py`):
 - **`data/names_index.json`** — Array of `{n, g, t}` (name, gender, totalCount), sorted by total descending. Used for typeahead. ~116K entries, ~3.4MB.
 - **`data/yearly_top.json`** — `{year: {F: [{name, count}, ...top20], M: [...]}}`. Top 20 stored, top 10 displayed.
 - **`data/details/<Name>_<Gender>.json`** — Per name+gender: `{name, gender, years: {year: {count, rank}}}`. Lazy-loaded on search. ~116K files.
@@ -38,4 +38,4 @@ Parses all 146 CSVs and generates `data/` directory (gitignored, regenerate with
 - Separate files per name+gender for simple lazy loading
 - Line gaps for missing years (no interpolation across absent data)
 - Rank y-axis inverted (#1 at top)
-- `data/` is gitignored since it's fully reproducible from `preprocess.py`
+- `data/` is committed for GitHub Pages hosting; regenerate with `python preprocess.py`
