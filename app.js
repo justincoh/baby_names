@@ -238,14 +238,12 @@ function getChartWidth(containerId) {
     return el.clientWidth - 1; // 1px for border rounding
 }
 
-function clearTooltips() {
-    document.querySelectorAll(".chart-tooltip").forEach((el) => el.remove());
-}
+// Shared tooltip element — created once, reused by all charts
+const tooltip = d3.select("body").append("div").attr("class", "chart-tooltip").style("opacity", 0);
 
 function renderCountChart() {
     const container = document.getElementById("count-chart");
     container.innerHTML = "";
-    clearTooltips();
     const detail = state.nameDetail;
     if (!detail) return;
 
@@ -397,8 +395,6 @@ function addLineTooltip(svg, g, data, xScale, yAccessor, innerW, innerH, color, 
     const tooltipLine = g.append("line").attr("class", "tooltip-line").attr("y1", 0).attr("y2", innerH).style("opacity", 0);
     const tooltipCircle = g.append("circle").attr("class", "tooltip-circle").attr("r", 4).attr("fill", color).style("opacity", 0);
 
-    const tooltipDiv = d3.select("body").append("div").attr("class", "chart-tooltip").style("opacity", 0);
-
     const bisect = d3.bisector((d) => d.year).left;
 
     svg.append("rect")
@@ -423,7 +419,7 @@ function addLineTooltip(svg, g, data, xScale, yAccessor, innerW, innerH, color, 
 
             tooltipLine.attr("x1", px).attr("x2", px).style("opacity", 1);
             tooltipCircle.attr("cx", px).attr("cy", py).style("opacity", 1);
-            tooltipDiv
+            tooltip
                 .style("opacity", 1)
                 .html(formatFn(d))
                 .style("left", event.pageX + 12 + "px")
@@ -432,14 +428,13 @@ function addLineTooltip(svg, g, data, xScale, yAccessor, innerW, innerH, color, 
         .on("mouseleave", () => {
             tooltipLine.style("opacity", 0);
             tooltipCircle.style("opacity", 0);
-            tooltipDiv.style("opacity", 0);
+            tooltip.style("opacity", 0);
         });
 }
 
 // ── Top Names Bar Charts ──
 
 function renderTopNames() {
-    clearTooltips();
     const genders =
         state.genderFilter === "both" ? ["F", "M"] : [state.genderFilter];
 
@@ -491,9 +486,6 @@ function renderTopNames() {
         const svg = d3.select(container).append("svg").attr("width", width).attr("height", height);
         const g = svg.append("g").attr("transform", `translate(${MARGIN.left},${MARGIN.top})`);
 
-        // Tooltip
-        const tooltipDiv = d3.select("body").append("div").attr("class", "chart-tooltip").style("opacity", 0);
-
         // Bars
         g.selectAll("rect")
             .data(topData)
@@ -505,14 +497,14 @@ function renderTopNames() {
             .attr("rx", 3)
             .attr("width", 0)
             .on("mousemove", (event, d) => {
-                tooltipDiv
+                tooltip
                     .style("opacity", 1)
                     .html(`${d.name}: <b>${d.count.toLocaleString()}</b>`)
                     .style("left", event.pageX + 12 + "px")
                     .style("top", event.pageY - 20 + "px");
             })
             .on("mouseleave", () => {
-                tooltipDiv.style("opacity", 0);
+                tooltip.style("opacity", 0);
             })
             .transition()
             .duration(600)

@@ -241,6 +241,7 @@ header p {
     cursor: pointer;
     pointer-events: all;
     position: relative;
+    margin-top: -8px;
 }
 
 .range-track-wrapper input[type="range"]::-moz-range-track {
