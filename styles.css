@@ -21,6 +21,10 @@
     --shadow-lg: 0 8px 24px rgba(28, 25, 23, 0.08), 0 2px 6px rgba(28, 25, 23, 0.04);
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     font-family: var(--font-body);
     background: var(--color-bg);
@@ -29,6 +33,7 @@ body {
     padding: 3rem 2rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
 
