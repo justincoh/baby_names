@@ -9,7 +9,7 @@ const state = {
     rangeMode: false,
 };
 
-const COLORS = { F: "#e15759", M: "#4e79a7" };
+const COLORS = { F: "#c4553a", M: "#2a7f8e" };
 const MARGIN = { top: 20, right: 30, bottom: 40, left: 55 };
 
 // ── Init ──
@@ -339,7 +339,7 @@ function renderRankChart() {
         .attr("x", -innerH / 2)
         .attr("text-anchor", "middle")
         .style("font-size", "11px")
-        .style("fill", "#999")
+        .style("fill", "#8c8478")
         .text("Rank (#1 = top)");
 
     // Line — exclude ranks beyond cap

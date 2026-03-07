@@ -4,19 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U.S. Baby Names Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="page-grain"></div>
+
     <header>
-        <h1>U.S. Baby Names Explorer</h1>
-        <p>Popularity trends from 1880 to 2024 &mdash; data from the Social Security Administration</p>
+        <p class="header-eyebrow">Social Security Administration &mdash; 1880 to 2024</p>
+        <h1>US Baby Names</h1>
+        <p class="header-sub">Explore 144 years of naming trends across 372 million recorded names</p>
     </header>
 
     <div class="controls">
         <div class="control-group">
             <label>Search Name</label>
             <div class="search-wrapper">
-                <input type="text" id="search-input" placeholder="Type a name..." autocomplete="off">
+                <svg class="search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="8.5" r="5.5"/><line x1="12.5" y1="12.5" x2="17" y2="17"/></svg>
+                <input type="text" id="search-input" placeholder="Try Mary, James, Luna..." autocomplete="off">
                 <div class="typeahead-dropdown hidden" id="typeahead-dropdown"></div>
             </div>
         </div>
@@ -73,6 +80,10 @@
             </div>
         </div>
     </div>
+
+    <footer>
+        <p>Data from the U.S. Social Security Administration. Names with fewer than 5 occurrences in a year are excluded for privacy.</p>
+    </footer>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="app.js"></script>
