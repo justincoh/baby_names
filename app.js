@@ -335,10 +335,12 @@ function renderRankChart() {
     const svg = d3.select(container).append("svg").attr("width", width).attr("height", height);
     const g = svg.append("g").attr("transform", `translate(${MARGIN.left},${MARGIN.top})`);
 
+    const rankTicks = [1, 100, 200, 300, 400, 500];
+
     // Grid
     g.append("g")
         .attr("class", "grid")
-        .call(d3.axisLeft(y).ticks(5).tickSize(-innerW).tickFormat(""));
+        .call(d3.axisLeft(y).tickValues(rankTicks).tickSize(-innerW).tickFormat(""));
 
     // Axes
     g.append("g")
@@ -346,7 +348,7 @@ function renderRankChart() {
         .attr("transform", `translate(0,${innerH})`)
         .call(d3.axisBottom(x).ticks(Math.min(innerW / 80, 10)).tickFormat(d3.format("d")));
 
-    g.append("g").attr("class", "axis").call(d3.axisLeft(y).ticks(5));
+    g.append("g").attr("class", "axis").call(d3.axisLeft(y).tickValues(rankTicks));
 
     // Axis label
     g.append("text")
