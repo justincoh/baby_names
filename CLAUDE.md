@@ -25,12 +25,13 @@ Parses all 146 CSVs and generates `data/` directory (gitignored, regenerate with
 - **D3.js v7** loaded via CDN
 
 ## Key Features
-- **Typeahead search** — Debounced prefix match on ~116K names, filtered by gender, keyboard nav (arrows/enter/escape), top 8 results sorted by popularity
-- **Name detail charts** — Count over time (line chart) + Rank over time (inverted y-axis, capped at 500), animated draw-in, interactive tooltips with tracking line
+- **Typeahead search** — Debounced prefix match on ~116K names, keyboard nav (arrows/enter/escape), top 8 results sorted by popularity
+- **Name detail charts** — Count over time (line chart) + Rank over time (inverted y-axis, capped at 500, gridline at rank 1), animated draw-in, interactive tooltips with tracking line
 - **Top names bar charts** — Side-by-side female/male horizontal bars, single year or range aggregation mode, hover tooltips + static count labels
 - **Dual-handle year range slider** — Two overlapping `<input type="range">` with filled track segment, live year labels
-- **Gender filter** — Toggles search results, chart visibility, and grid layout
-- **Responsive resize** — Debounced handler recalculates chart widths
+- **Range mode toggle** — "Use Date Range Above" button hides year dropdown, shows active range label (e.g. "1901–2023"), updates live with slider
+- **Shared tooltip** — Single tooltip div reused by all charts (line charts + bar charts) to avoid stale DOM elements
+- **Responsive** — Debounced resize handler, charts stack vertically at 768px, `min-width: 0` + `overflow-x: auto` prevents mobile overflow
 
 ## Design Decisions
 - Gender colors: `#e15759` (female), `#4e79a7` (male) — colorblind-friendly
