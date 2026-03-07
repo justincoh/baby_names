@@ -1,7 +1,7 @@
 # Baby Names Explorer
 
 ## Project Overview
-Single-page D3.js web app visualizing U.S. baby name popularity (1880–2024) from SSA data. No frameworks or build tools — served via `python -m http.server`.
+Single-page D3.js web app visualizing U.S. baby name popularity (1880–2024) from SSA data. No frameworks or build tools. Hosted on GitHub Pages, deployed via GitHub Actions workflow.
 
 ## Raw Dataset
 - **Location:** `names/` directory (ignore `NationalReadMe.pdf`)
@@ -9,6 +9,7 @@ Single-page D3.js web app visualizing U.S. baby name popularity (1880–2024) fr
 - CSV format with **no header row**, columns: `Name,Gender,Count`
 - Gender values: `F` or `M`, line endings: Windows-style `\r\n`
 - Files are pre-sorted: females first then males, each sorted by count descending
+- Total recorded names across all files: ~372 million
 
 ## Architecture
 
@@ -19,23 +20,30 @@ Parses all 146 CSVs and generates `data/` directory (regenerate with `python pre
 - **`data/details/<Name>_<Gender>.json`** — Per name+gender: `{name, gender, years: {year: {count, rank}}}`. Lazy-loaded on search. ~116K files.
 
 ### Frontend
-- **`index.html`** — Single page: header, controls bar, name detail section (hidden until search), top names section
+- **`index.html`** — Single page: header, controls bar, name detail section (hidden until search), top names section, footer
 - **`app.js`** — All D3 charts, typeahead search, state management, event wiring
-- **`styles.css`** — CSS Grid layout, system font stack, responsive (stacks at 768px)
+- **`styles.css`** — CSS Grid layout, responsive (stacks at 768px)
 - **D3.js v7** loaded via CDN
+- **Fonts** — Instrument Serif (not currently used but loaded) + DM Sans (all text) via Google Fonts
+
+### Deployment
+- **GitHub Pages** via `.github/workflows/deploy.yml`
+- `data/` is committed (not gitignored) so Pages can serve it directly
+- Deploys automatically on push to `main`
 
 ## Key Features
-- **Typeahead search** — Debounced prefix match on ~116K names, keyboard nav (arrows/enter/escape), top 8 results sorted by popularity
+- **Typeahead search** — Debounced prefix match on ~116K names, keyboard nav (arrows/enter/escape), top 8 results sorted by popularity, event delegation for click handling
 - **Name detail charts** — Count over time (line chart) + Rank over time (inverted y-axis, capped at 500, gridline at rank 1), animated draw-in, interactive tooltips with tracking line
 - **Top names bar charts** — Side-by-side female/male horizontal bars, single year or range aggregation mode, hover tooltips + static count labels
 - **Dual-handle year range slider** — Two overlapping `<input type="range">` with filled track segment, live year labels
 - **Range mode toggle** — "Use Date Range Above" button hides year dropdown, shows active range label (e.g. "1901–2023"), updates live with slider
-- **Shared tooltip** — Single tooltip div reused by all charts (line charts + bar charts) to avoid stale DOM elements
-- **Responsive** — Debounced resize handler, charts stack vertically at 768px, `min-width: 0` + `overflow-x: auto` prevents mobile overflow
+- **Shared tooltip** — Single tooltip div created once, reused by all charts to avoid stale DOM elements
+- **Responsive** — Resize handler only fires on width change (prevents mobile scroll flashing from address bar), charts stack vertically at 768px, `min-width: 0` + `overflow-x: auto` prevents mobile overflow
 
-## Design Decisions
-- Gender colors: `#e15759` (female), `#4e79a7` (male) — colorblind-friendly
+## Design
+- **Aesthetic:** Editorial/data-story — warm parchment background, subtle paper grain texture, shadow-based cards, fade-up section animations
+- **Colors:** Terracotta `#c4553a` (female), deep teal `#2a7f8e` (male), parchment `#f5f0e8` (bg), cream `#fffdf8` (surfaces)
+- **Typography:** DM Sans for all text (headings weight 400, body weight 400-600)
 - Separate files per name+gender for simple lazy loading
 - Line gaps for missing years (no interpolation across absent data)
 - Rank y-axis inverted (#1 at top)
-- `data/` is committed for GitHub Pages hosting; regenerate with `python preprocess.py`
