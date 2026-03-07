@@ -35,6 +35,12 @@ function setupSearch() {
     const input = document.getElementById("search-input");
     const dropdown = document.getElementById("typeahead-dropdown");
 
+    // Event delegation for typeahead clicks
+    dropdown.addEventListener("click", (e) => {
+        const item = e.target.closest(".typeahead-item[data-name]");
+        if (item) selectName(item.dataset.name, item.dataset.gender);
+    });
+
     input.addEventListener("input", debounce(() => {
         const query = input.value.trim().toLowerCase();
         if (query.length === 0) {
@@ -46,7 +52,7 @@ function setupSearch() {
             .slice(0, 8);
 
         if (results.length === 0) {
-            dropdown.innerHTML = '<div class="typeahead-item" style="color:#999">No matches</div>';
+            dropdown.innerHTML = '<div class="typeahead-item no-matches">No matches</div>';
         } else {
             dropdown.innerHTML = results
                 .map(
@@ -60,9 +66,6 @@ function setupSearch() {
                 .join("");
         }
         dropdown.classList.remove("hidden");
-        dropdown.querySelectorAll(".typeahead-item[data-name]").forEach((el) => {
-            el.addEventListener("click", () => selectName(el.dataset.name, el.dataset.gender));
-        });
     }, 150));
 
     // Keyboard navigation
@@ -71,16 +74,17 @@ function setupSearch() {
         const active = dropdown.querySelector(".typeahead-item.active");
         let idx = [...items].indexOf(active);
 
+        function setActive(newIdx) {
+            items.forEach((el) => el.classList.remove("active"));
+            items[newIdx]?.classList.add("active");
+        }
+
         if (e.key === "ArrowDown") {
             e.preventDefault();
-            idx = Math.min(idx + 1, items.length - 1);
-            items.forEach((el) => el.classList.remove("active"));
-            items[idx]?.classList.add("active");
+            setActive(Math.min(idx + 1, items.length - 1));
         } else if (e.key === "ArrowUp") {
             e.preventDefault();
-            idx = Math.max(idx - 1, 0);
-            items.forEach((el) => el.classList.remove("active"));
-            items[idx]?.classList.add("active");
+            setActive(Math.max(idx - 1, 0));
         } else if (e.key === "Enter") {
             e.preventDefault();
             if (active) {
@@ -113,14 +117,13 @@ async function selectName(name, gender) {
     }
 
     const section = document.getElementById("name-detail-section");
+    section.classList.remove("hidden");
     if (state.nameDetail) {
-        section.classList.remove("hidden");
         document.getElementById("name-detail-title").textContent =
             `${name} (${gender === "F" ? "Female" : "Male"})`;
         renderCountChart();
         renderRankChart();
     } else {
-        section.classList.remove("hidden");
         document.getElementById("name-detail-title").textContent = `${name} — no data found`;
         document.getElementById("count-chart").innerHTML = "";
         document.getElementById("rank-chart").innerHTML = "";
@@ -135,6 +138,7 @@ function setupYearInputs() {
     const labelStart = document.getElementById("range-label-start");
     const labelEnd = document.getElementById("range-label-end");
     const fill = document.getElementById("range-track-fill");
+    const rangeLabel = document.getElementById("range-mode-label");
 
     function updateFill() {
         const min = parseInt(startInput.min);
@@ -169,8 +173,7 @@ function setupYearInputs() {
         labelStart.textContent = s;
         labelEnd.textContent = e;
         updateFill();
-        const rl = document.getElementById("range-mode-label");
-        if (state.rangeMode) rl.textContent = `${s}\u2013${e}`;
+        if (state.rangeMode) rangeLabel.textContent = `${s}\u2013${e}`;
         renderCharts();
     }
 
@@ -367,11 +370,9 @@ function renderRankChart() {
     );
 }
 
-function addLineTooltip(svg, g, data, xScale, yAccessor, innerW, innerH, color, formatFn) {
+function addLineTooltip(svg, g, data, xScale, yFn, innerW, innerH, color, formatFn) {
     const validData = data.filter((d) => (d.count !== null && d.count !== undefined));
     if (validData.length === 0) return;
-
-    const yFn = yAccessor;
 
     const tooltipLine = g.append("line").attr("class", "tooltip-line").attr("y1", 0).attr("y2", innerH).style("opacity", 0);
     const tooltipCircle = g.append("circle").attr("class", "tooltip-circle").attr("r", 4).attr("fill", color).style("opacity", 0);

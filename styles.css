@@ -133,6 +133,11 @@ header p {
     font-size: 0.8rem;
 }
 
+.typeahead-item.no-matches {
+    color: var(--color-muted);
+    cursor: default;
+}
+
 /* Year range slider */
 .control-group-slider {
     flex: 1;
