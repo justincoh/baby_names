@@ -513,7 +513,10 @@ function renderTopNames() {
 
 // ── Resize ──
 
+let lastWidth = window.innerWidth;
 function onResize() {
+    if (window.innerWidth === lastWidth) return;
+    lastWidth = window.innerWidth;
     if (state.nameDetail) {
         renderCountChart();
         renderRankChart();
