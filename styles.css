@@ -103,10 +103,6 @@ header p {
     display: none;
 }
 
-.single-column {
-    grid-template-columns: 1fr !important;
-}
-
 .typeahead-item {
     display: flex;
     align-items: center;
@@ -135,31 +131,6 @@ header p {
     margin-left: auto;
     color: var(--color-muted);
     font-size: 0.8rem;
-}
-
-/* Gender toggle */
-.gender-buttons {
-    display: flex;
-    gap: 0;
-}
-
-.gender-btn {
-    padding: 0.5rem 0.85rem;
-    font-size: 0.85rem;
-    border: 1px solid var(--color-border);
-    background: var(--color-surface);
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.gender-btn:first-child { border-radius: var(--radius) 0 0 var(--radius); }
-.gender-btn:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
-.gender-btn:not(:first-child) { border-left: none; }
-
-.gender-btn.active {
-    background: var(--color-text);
-    color: var(--color-surface);
-    border-color: var(--color-text);
 }
 
 /* Year range slider */

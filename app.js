@@ -2,7 +2,6 @@
 const state = {
     namesIndex: [],
     yearlyTop: {},
-    genderFilter: "both",
     yearStart: 1880,
     yearEnd: 2024,
     selectedName: null, // {name, gender}
@@ -24,7 +23,6 @@ async function init() {
     state.yearlyTop = yearlyTop;
 
     setupSearch();
-    setupGenderButtons();
     setupYearInputs();
     setupTopNamesControls();
     renderTopNames();
@@ -44,10 +42,7 @@ function setupSearch() {
             return;
         }
         const results = state.namesIndex
-            .filter((e) => {
-                if (state.genderFilter !== "both" && e.g !== state.genderFilter) return false;
-                return e.n.toLowerCase().startsWith(query);
-            })
+            .filter((e) => e.n.toLowerCase().startsWith(query))
             .slice(0, 8);
 
         if (results.length === 0) {
@@ -130,36 +125,6 @@ async function selectName(name, gender) {
         document.getElementById("count-chart").innerHTML = "";
         document.getElementById("rank-chart").innerHTML = "";
     }
-}
-
-// ── Gender Buttons ──
-
-function setupGenderButtons() {
-    document.querySelectorAll(".gender-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            document.querySelectorAll(".gender-btn").forEach((b) => b.classList.remove("active"));
-            btn.classList.add("active");
-            state.genderFilter = btn.dataset.gender;
-
-            // Update top names chart visibility
-            const fc = document.getElementById("top-female-container");
-            const mc = document.getElementById("top-male-container");
-            fc.classList.toggle("hidden", state.genderFilter === "M");
-            mc.classList.toggle("hidden", state.genderFilter === "F");
-
-            // Re-render if single gender, reset grid
-            const row = document.getElementById("top-charts-row");
-            row.classList.toggle("single-column", state.genderFilter !== "both");
-
-            renderTopNames();
-
-            // Re-trigger search if input has text
-            const input = document.getElementById("search-input");
-            if (input.value.trim()) {
-                input.dispatchEvent(new Event("input"));
-            }
-        });
-    });
 }
 
 // ── Year Range Slider ──
@@ -437,10 +402,7 @@ function addLineTooltip(svg, g, data, xScale, yAccessor, innerW, innerH, color, 
 // ── Top Names Bar Charts ──
 
 function renderTopNames() {
-    const genders =
-        state.genderFilter === "both" ? ["F", "M"] : [state.genderFilter];
-
-    genders.forEach((gender) => {
+    ["F", "M"].forEach((gender) => {
         const containerId = gender === "F" ? "top-female-chart" : "top-male-chart";
         const container = document.getElementById(containerId);
         container.innerHTML = "";
