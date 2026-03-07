@@ -364,6 +364,12 @@ header p {
     border-color: var(--color-text);
 }
 
+.range-mode-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-muted);
+}
+
 .no-data-msg {
     padding: 2rem;
     text-align: center;

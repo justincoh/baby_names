@@ -169,6 +169,8 @@ function setupYearInputs() {
         labelStart.textContent = s;
         labelEnd.textContent = e;
         updateFill();
+        const rl = document.getElementById("range-mode-label");
+        if (state.rangeMode) rl.textContent = `${s}\u2013${e}`;
         renderCharts();
     }
 
@@ -189,9 +191,21 @@ function setupTopNamesControls() {
     }
     select.addEventListener("change", renderTopNames);
 
-    document.getElementById("range-mode-btn").addEventListener("click", (e) => {
+    const rangeBtn = document.getElementById("range-mode-btn");
+    const rangeLabel = document.getElementById("range-mode-label");
+
+    function updateRangeMode() {
+        rangeBtn.classList.toggle("active", state.rangeMode);
+        select.classList.toggle("hidden", state.rangeMode);
+        rangeLabel.classList.toggle("hidden", !state.rangeMode);
+        if (state.rangeMode) {
+            rangeLabel.textContent = `${state.yearStart}\u2013${state.yearEnd}`;
+        }
+    }
+
+    rangeBtn.addEventListener("click", () => {
         state.rangeMode = !state.rangeMode;
-        e.target.classList.toggle("active", state.rangeMode);
+        updateRangeMode();
         renderTopNames();
     });
 }
