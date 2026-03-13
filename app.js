@@ -154,7 +154,9 @@ function setupYearInputs() {
             renderCountChart();
             renderRankChart();
         }
-        renderTopNames();
+        if (state.rangeMode) {
+            renderTopNames();
+        }
     }, 80);
 
     function onInput() {

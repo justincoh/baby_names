@@ -11,6 +11,13 @@ Single-page D3.js web app visualizing U.S. baby name popularity (1880–2024) fr
 - Files are pre-sorted: females first then males, each sorted by count descending
 - Total recorded names across all files: ~372 million
 
+## Local Development
+Run a local HTTP server (required — `file://` URLs block fetch requests):
+```
+python3 -m http.server 8000
+```
+Then open `http://localhost:8000`.
+
 ## Architecture
 
 ### Preprocessing (`preprocess.py`)
