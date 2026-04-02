@@ -654,7 +654,7 @@ function renderTopNames() {
 
 let lastWidth = window.innerWidth;
 function onResize() {
-    if (window.innerWidth === lastWidth) return;
+    if (Math.abs(window.innerWidth - lastWidth) < 2) return;
     lastWidth = window.innerWidth;
     if (state.nameDetail) {
         renderCountChart();
