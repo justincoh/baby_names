@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Baby Names — Tests</title>
+    <style>
+        * { margin: 0; box-sizing: border-box; }
+        body { font-family: monospace; padding: 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { margin-bottom: 12px; font-size: 18px; }
+        .suite { margin-bottom: 16px; }
+        .suite-name { font-weight: bold; margin-bottom: 4px; color: #aaa; }
+        .result { padding: 2px 0; padding-left: 16px; }
+        .pass { color: #4ec94e; }
+        .fail { color: #e74c3c; }
+        .summary { margin-top: 20px; padding-top: 12px; border-top: 1px solid #333; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Baby Names Test Suite</h1>
+    <div id="test-output"></div>
+
+    <!-- App DOM structure (hidden) — app.js expects these elements -->
+    <div style="position:absolute;left:-9999px;width:800px">
+        <div class="search-wrapper">
+            <input type="text" id="search-input" autocomplete="off">
+            <div class="typeahead-dropdown hidden" id="typeahead-dropdown"></div>
+        </div>
+        <input type="range" id="year-start" min="1880" max="2024" value="1880">
+        <input type="range" id="year-end" min="1880" max="2024" value="2024">
+        <div id="range-track-fill"></div>
+        <span id="range-label-start">1880</span>
+        <span id="range-label-end">2024</span>
+        <select id="top-year-select"></select>
+        <button id="range-mode-btn">Use Date Range Above</button>
+        <span class="hidden" id="range-mode-label"></span>
+        <div class="section hidden" id="name-detail-section">
+            <h2 id="name-detail-title"></h2>
+            <div id="count-chart" style="width:600px"></div>
+            <div id="rank-chart" style="width:600px"></div>
+        </div>
+        <div id="top-female-chart" style="width:400px"></div>
+        <div id="top-male-chart" style="width:400px"></div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="app.js"></script>
+    <script src="tests.js"></script>
+</body>
+</html>
