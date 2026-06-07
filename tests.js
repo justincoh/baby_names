@@ -53,7 +53,7 @@ function showSummary() {
 function waitForInit() {
     return new Promise((resolve) => {
         const check = setInterval(() => {
-            if (state.namesIndex.length > 0 && state.yearlyTop["2024"]) {
+            if (state.namesIndex.length > 0 && state.yearlyTop["2025"]) {
                 clearInterval(check);
                 resolve();
             }
@@ -104,11 +104,11 @@ function testInitialState() {
     suite("Initial State");
 
     assert("namesIndex loaded", state.namesIndex.length > 100000);
-    assert("yearlyTop has 2024", state.yearlyTop["2024"] !== undefined);
+    assert("yearlyTop has 2025", state.yearlyTop["2025"] !== undefined);
     assert("yearlyTop has 1880", state.yearlyTop["1880"] !== undefined);
     assert("nameSet built", state.nameSet instanceof Set && state.nameSet.size > 0);
     assertEqual("yearStart default", state.yearStart, 1880);
-    assertEqual("yearEnd default", state.yearEnd, 2024);
+    assertEqual("yearEnd default", state.yearEnd, 2025);
     assertEqual("rangeMode default", state.rangeMode, false);
     assertEqual("selectedName default", state.selectedName, null);
     assertEqual("nameDetail default", state.nameDetail, null);
@@ -120,16 +120,16 @@ function testInitialState() {
     assert("namesIndex entries have total", typeof first.t === "number" && first.t > 0);
 
     // Verify yearlyTop structure
-    const y2024 = state.yearlyTop["2024"];
-    assert("yearlyTop has F array", Array.isArray(y2024.F) && y2024.F.length > 0);
-    assert("yearlyTop has M array", Array.isArray(y2024.M) && y2024.M.length > 0);
-    assert("yearlyTop entries have name", typeof y2024.F[0].name === "string");
-    assert("yearlyTop entries have count", typeof y2024.F[0].count === "number");
+    const y2025 = state.yearlyTop["2025"];
+    assert("yearlyTop has F array", Array.isArray(y2025.F) && y2025.F.length > 0);
+    assert("yearlyTop has M array", Array.isArray(y2025.M) && y2025.M.length > 0);
+    assert("yearlyTop entries have name", typeof y2025.F[0].name === "string");
+    assert("yearlyTop entries have count", typeof y2025.F[0].count === "number");
 
     // Year dropdown populated
     const select = document.getElementById("top-year-select");
     assert("year dropdown populated", select.options.length > 100);
-    assertEqual("year dropdown default is 2024", select.value, "2024");
+    assertEqual("year dropdown default is 2025", select.value, "2025");
 }
 
 function testBuildUrlParams() {
@@ -141,9 +141,9 @@ function testBuildUrlParams() {
     // Default state — should produce no params
     state.selectedName = null;
     state.yearStart = 1880;
-    state.yearEnd = 2024;
+    state.yearEnd = 2025;
     state.rangeMode = false;
-    document.getElementById("top-year-select").value = "2024";
+    document.getElementById("top-year-select").value = "2025";
     let params = buildUrlParams();
     assertEqual("default state produces empty params", params.toString(), "");
 
@@ -174,7 +174,7 @@ function testBuildUrlParams() {
 
     // Restore
     Object.assign(state, orig);
-    document.getElementById("top-year-select").value = "2024";
+    document.getElementById("top-year-select").value = "2025";
 }
 
 function testParseUrlParams() {
@@ -211,7 +211,7 @@ function testParseUrlParams() {
     history.replaceState(null, "", "?start=1800&end=2100");
     p = parseUrlParams();
     assertEqual("start clamped to 1880", p.yearStart, 1880);
-    assertEqual("end clamped to 2024", p.yearEnd, 2024);
+    assertEqual("end clamped to 2025", p.yearEnd, 2025);
 
     // Range mode
     history.replaceState(null, "", "?range=1");
@@ -327,7 +327,7 @@ function testTopNamesRendering() {
     assert("female chart re-rendered for 1950", newFemaleBars.length === 10);
 
     // Restore
-    select.value = "2024";
+    select.value = "2025";
     select.dispatchEvent(new Event("change"));
 }
 
@@ -399,9 +399,9 @@ function testUrlSyncAfterInteractions() {
     // Reset to clean state
     state.selectedName = null;
     state.yearStart = 1880;
-    state.yearEnd = 2024;
+    state.yearEnd = 2025;
     state.rangeMode = false;
-    document.getElementById("top-year-select").value = "2024";
+    document.getElementById("top-year-select").value = "2025";
 
     syncUrl();
     assertEqual("default state produces clean URL", window.location.search, "");
@@ -422,7 +422,7 @@ function testUrlSyncAfterInteractions() {
     // Clean up
     state.selectedName = null;
     state.yearStart = 1880;
-    state.yearEnd = 2024;
+    state.yearEnd = 2025;
     syncUrl();
     history.replaceState(null, "", window.location.pathname);
 }
@@ -462,17 +462,17 @@ async function testUrlRestore() {
 
     // Clean up — full reset
     state.yearStart = 1880;
-    state.yearEnd = 2024;
+    state.yearEnd = 2025;
     state.rangeMode = false;
     state.selectedName = null;
     state.nameDetail = null;
     document.getElementById("year-start").value = 1880;
-    document.getElementById("year-end").value = 2024;
+    document.getElementById("year-end").value = 2025;
     document.getElementById("range-label-start").textContent = "1880";
-    document.getElementById("range-label-end").textContent = "2024";
+    document.getElementById("range-label-end").textContent = "2025";
     document.getElementById("range-mode-btn").classList.remove("active");
     document.getElementById("top-year-select").classList.remove("hidden");
-    document.getElementById("top-year-select").value = "2024";
+    document.getElementById("top-year-select").value = "2025";
     document.getElementById("range-mode-label").classList.add("hidden");
     document.getElementById("name-detail-section").classList.add("hidden");
     document.getElementById("search-input").value = "";

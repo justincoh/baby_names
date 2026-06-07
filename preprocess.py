@@ -10,7 +10,7 @@ NAMES_DIR = "names"
 DATA_DIR = "data"
 DETAILS_DIR = os.path.join(DATA_DIR, "details")
 YEAR_START = 1880
-YEAR_END = 2024
+YEAR_END = 2025
 
 
 def main():

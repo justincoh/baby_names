@@ -3,7 +3,7 @@ const state = {
     namesIndex: [],
     yearlyTop: {},
     yearStart: 1880,
-    yearEnd: 2024,
+    yearEnd: 2025,
     selectedName: null, // {name, gender}
     nameDetail: null,
     rangeMode: false,
@@ -21,12 +21,12 @@ function buildUrlParams() {
         params.set("gender", state.selectedName.gender);
     }
     if (state.yearStart !== 1880) params.set("start", state.yearStart);
-    if (state.yearEnd !== 2024) params.set("end", state.yearEnd);
+    if (state.yearEnd !== 2025) params.set("end", state.yearEnd);
     if (state.rangeMode) {
         params.set("range", "1");
     } else {
         const year = document.getElementById("top-year-select").value;
-        if (year !== "2024") params.set("year", year);
+        if (year !== "2025") params.set("year", year);
     }
     return params;
 }
@@ -62,8 +62,8 @@ function parseUrlParams() {
 
     let start = parseInt(params.get("start"));
     let end = parseInt(params.get("end"));
-    if (!isNaN(start)) result.yearStart = Math.max(1880, Math.min(2024, start));
-    if (!isNaN(end)) result.yearEnd = Math.max(1880, Math.min(2024, end));
+    if (!isNaN(start)) result.yearStart = Math.max(1880, Math.min(2025, start));
+    if (!isNaN(end)) result.yearEnd = Math.max(1880, Math.min(2025, end));
     if (result.yearStart !== null && result.yearEnd !== null && result.yearStart > result.yearEnd) {
         [result.yearStart, result.yearEnd] = [result.yearEnd, result.yearStart];
     }
@@ -71,7 +71,7 @@ function parseUrlParams() {
     result.rangeMode = params.get("range") === "1";
 
     const topYear = parseInt(params.get("year"));
-    if (!isNaN(topYear)) result.topYear = Math.max(1880, Math.min(2024, topYear));
+    if (!isNaN(topYear)) result.topYear = Math.max(1880, Math.min(2025, topYear));
 
     return result;
 }
@@ -90,8 +90,8 @@ async function restoreFromUrl(params) {
 
     // Update fill bar
     const fill = document.getElementById("range-track-fill");
-    const pctStart = ((state.yearStart - 1880) / (2024 - 1880)) * 100;
-    const pctEnd = ((state.yearEnd - 1880) / (2024 - 1880)) * 100;
+    const pctStart = ((state.yearStart - 1880) / (2025 - 1880)) * 100;
+    const pctEnd = ((state.yearEnd - 1880) / (2025 - 1880)) * 100;
     fill.style.left = pctStart + "%";
     fill.style.right = (100 - pctEnd) + "%";
 
@@ -126,7 +126,7 @@ async function restoreFromUrl(params) {
 async function onPopState() {
     // Reset state to defaults
     state.yearStart = 1880;
-    state.yearEnd = 2024;
+    state.yearEnd = 2025;
     state.rangeMode = false;
     state.selectedName = null;
     state.nameDetail = null;
@@ -137,7 +137,7 @@ async function onPopState() {
     document.getElementById("range-mode-btn").classList.remove("active");
     document.getElementById("top-year-select").classList.remove("hidden");
     document.getElementById("range-mode-label").classList.add("hidden");
-    document.getElementById("top-year-select").value = "2024";
+    document.getElementById("top-year-select").value = "2025";
 
     await restoreFromUrl(parseUrlParams());
 }
@@ -324,7 +324,7 @@ function setupYearInputs() {
 
 function setupTopNamesControls() {
     const select = document.getElementById("top-year-select");
-    for (let y = 2024; y >= 1880; y--) {
+    for (let y = 2025; y >= 1880; y--) {
         const opt = document.createElement("option");
         opt.value = y;
         opt.textContent = y;

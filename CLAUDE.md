@@ -1,11 +1,11 @@
 # Baby Names Explorer
 
 ## Project Overview
-Single-page D3.js web app visualizing U.S. baby name popularity (1880–2024) from SSA data. No frameworks or build tools. Hosted on GitHub Pages, deployed via GitHub Actions workflow.
+Single-page D3.js web app visualizing U.S. baby name popularity (1880–2025) from SSA data. No frameworks or build tools. Hosted on GitHub Pages, deployed via GitHub Actions workflow.
 
 ## Raw Dataset
 - **Location:** `names/` directory (ignore `NationalReadMe.pdf`)
-- **146 files**, named `yob####.txt` (e.g., `yob1880.txt`) covering 1880–2024
+- **146 files**, named `yob####.txt` (e.g., `yob1880.txt`) covering 1880–2025
 - CSV format with **no header row**, columns: `Name,Gender,Count`
 - Gender values: `F` or `M`, line endings: Windows-style `\r\n`
 - Files are pre-sorted: females first then males, each sorted by count descending
