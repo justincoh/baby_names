@@ -9,7 +9,7 @@ Single-page D3.js web app visualizing U.S. baby name popularity (1880–2025) fr
 - CSV format with **no header row**, columns: `Name,Gender,Count`
 - Gender values: `F` or `M`, line endings: Windows-style `\r\n`
 - Files are pre-sorted: females first then males, each sorted by count descending
-- Total recorded names across all files: ~372 million
+- Total recorded names across all files: ~375 million
 
 ## Local Development
 Run a local HTTP server (required — `file://` URLs block fetch requests):
