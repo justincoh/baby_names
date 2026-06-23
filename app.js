@@ -7,6 +7,7 @@ const state = {
     selectedName: null, // {name, gender}
     nameDetail: null,
     rangeMode: false,
+    topCount: 10,
 };
 
 const COLORS = { F: "#c4553a", M: "#2a7f8e" };
@@ -28,6 +29,7 @@ function buildUrlParams() {
         const year = document.getElementById("top-year-select").value;
         if (year !== "2025") params.set("year", year);
     }
+    if (state.topCount !== 10) params.set("count", state.topCount);
     return params;
 }
 
@@ -44,7 +46,7 @@ function syncUrl(push = false) {
 
 function parseUrlParams() {
     const params = new URLSearchParams(window.location.search);
-    const result = { name: null, gender: null, yearStart: null, yearEnd: null, rangeMode: false, topYear: null };
+    const result = { name: null, gender: null, yearStart: null, yearEnd: null, rangeMode: false, topYear: null, topCount: 10 };
 
     const name = params.get("name")?.trim();
     if (name) {
@@ -72,6 +74,8 @@ function parseUrlParams() {
 
     const topYear = parseInt(params.get("year"));
     if (!isNaN(topYear)) result.topYear = Math.max(1880, Math.min(2025, topYear));
+
+    if (parseInt(params.get("count")) === 25) result.topCount = 25;
 
     return result;
 }
@@ -111,6 +115,10 @@ async function restoreFromUrl(params) {
     if (params.topYear !== null && !state.rangeMode) {
         document.getElementById("top-year-select").value = params.topYear;
     }
+
+    // Top count toggle
+    state.topCount = params.topCount;
+    updateCountToggle();
 
     renderTopNames();
 
@@ -350,6 +358,24 @@ function setupTopNamesControls() {
         renderTopNames();
         syncUrl();
     });
+
+    const countToggle = document.getElementById("top-count-toggle");
+    countToggle.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-count]");
+        if (!btn) return;
+        const count = parseInt(btn.dataset.count);
+        if (count === state.topCount) return;
+        state.topCount = count;
+        updateCountToggle();
+        renderTopNames();
+        syncUrl();
+    });
+}
+
+function updateCountToggle() {
+    document.querySelectorAll("#top-count-toggle button[data-count]").forEach((b) => {
+        b.classList.toggle("active", parseInt(b.dataset.count) === state.topCount);
+    });
 }
 
 // ── Line Charts ──
@@ -575,11 +601,11 @@ function renderTopNames() {
             topData = Object.entries(counts)
                 .map(([name, count]) => ({ name, count }))
                 .sort((a, b) => b.count - a.count)
-                .slice(0, 10);
+                .slice(0, state.topCount);
         } else {
             const year = document.getElementById("top-year-select").value;
             const yearData = state.yearlyTop[year];
-            topData = yearData && yearData[gender] ? yearData[gender].slice(0, 10) : [];
+            topData = yearData && yearData[gender] ? yearData[gender].slice(0, state.topCount) : [];
         }
 
         if (topData.length === 0) {

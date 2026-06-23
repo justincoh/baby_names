@@ -480,6 +480,22 @@ header h1 {
     font-variant-numeric: tabular-nums;
 }
 
+.count-toggle {
+    display: flex;
+    margin-left: auto;
+}
+
+.count-toggle button:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.count-toggle button:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-width: 0;
+}
+
 .no-data-msg {
     padding: 2.5rem;
     text-align: center;

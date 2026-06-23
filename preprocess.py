@@ -42,7 +42,7 @@ def main():
                 name_data[(name, gender)][year] = {"count": count, "rank": rank}
                 totals[(name, gender)] += count
 
-                if rank <= 20:
+                if rank <= 25:
                     year_data[gender].append({"name": name, "count": count})
 
         yearly_top[year] = year_data
