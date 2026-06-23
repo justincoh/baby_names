@@ -23,7 +23,7 @@ Then open `http://localhost:8000`.
 ### Preprocessing (`preprocess.py`)
 Parses all 146 CSVs and generates `data/` directory (regenerate with `python preprocess.py`):
 - **`data/names_index.json`** — Array of `{n, g, t}` (name, gender, totalCount), sorted by total descending. Used for typeahead. ~116K entries, ~3.4MB.
-- **`data/yearly_top.json`** — `{year: {F: [{name, count}, ...top20], M: [...]}}`. Top 20 stored, top 10 displayed.
+- **`data/yearly_top.json`** — `{year: {F: [{name, count}, ...top25], M: [...]}}`. Top 25 stored; user toggles between top 10 (default) and top 25 displayed.
 - **`data/details/<Name>_<Gender>.json`** — Per name+gender: `{name, gender, years: {year: {count, rank}}}`. Lazy-loaded on search. ~116K files.
 
 ### Frontend
