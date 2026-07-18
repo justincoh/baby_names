@@ -388,6 +388,15 @@ function getChartWidth(containerId) {
 // Shared tooltip element — created once, reused by all charts
 const tooltip = d3.select("body").append("div").attr("class", "chart-tooltip").style("opacity", 0);
 
+// Position the tooltip near the cursor, clamped inside the viewport so it never
+// pushes the page wider than the screen (which causes horizontal jank on iOS).
+// Call after setting .html() so offsetWidth reflects the current content.
+function positionTooltip(event) {
+    const tipW = tooltip.node().offsetWidth;
+    const left = Math.max(8, Math.min(event.pageX + 12, window.innerWidth - tipW - 8));
+    tooltip.style("left", left + "px").style("top", event.pageY - 20 + "px");
+}
+
 function renderCountChart() {
     const container = document.getElementById("count-chart");
     container.innerHTML = "";
@@ -566,11 +575,8 @@ function addLineTooltip(svg, g, data, xScale, yFn, innerW, innerH, color, format
 
             tooltipLine.attr("x1", px).attr("x2", px).style("opacity", 1);
             tooltipCircle.attr("cx", px).attr("cy", py).style("opacity", 1);
-            tooltip
-                .style("opacity", 1)
-                .html(formatFn(d))
-                .style("left", event.pageX + 12 + "px")
-                .style("top", event.pageY - 20 + "px");
+            tooltip.style("opacity", 1).html(formatFn(d));
+            positionTooltip(event);
         })
         .on("mouseleave", () => {
             tooltipLine.style("opacity", 0);
@@ -641,11 +647,8 @@ function renderTopNames() {
             .attr("rx", 3)
             .attr("width", 0)
             .on("mousemove", (event, d) => {
-                tooltip
-                    .style("opacity", 1)
-                    .html(`${d.name}: <b>${d.count.toLocaleString()}</b>`)
-                    .style("left", event.pageX + 12 + "px")
-                    .style("top", event.pageY - 20 + "px");
+                tooltip.style("opacity", 1).html(`${d.name}: <b>${d.count.toLocaleString()}</b>`);
+                positionTooltip(event);
             })
             .on("mouseleave", () => {
                 tooltip.style("opacity", 0);
